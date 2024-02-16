@@ -30,7 +30,8 @@ namespace ProjetoSistemaTI18N
 
         private void consultar_Click(object sender, EventArgs e)
         {
-
+            Consultar con = new Consultar();
+            con.ShowDialog();
         }//fim do consultar
 
         private void atualizar_Click(object sender, EventArgs e)

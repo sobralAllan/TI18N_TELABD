@@ -14,6 +14,14 @@ namespace ProjetoSistemaTI18N
         MySqlConnection conexao;
         public string dados;
         public string sql;
+        public int contador;
+        public int i;
+        public string resultado;
+        public int[] codigo;
+        public string[] nome;
+        public string[] telefone;
+        public string[] cidade;
+        public string[] estado;
         public DAO()
         {
             conexao = new MySqlConnection("server=localhost;DataBase=ti18n;Uid=root;Password=");
@@ -42,5 +50,84 @@ namespace ProjetoSistemaTI18N
                 MessageBox.Show("Algo deu errado!\n\n" + erro);
             }
         }//fim do método
+
+        public int ConsultarTamanhoBD()
+        {
+            return contador;
+        }//fim do selecionar
+
+        public void PreencherVetor()
+        {
+            string query = "select * from pessoa";//Coletar os dados do BD
+
+            //Instanciar
+            this.codigo = new int[100];
+            this.nome = new string[100];
+            this.telefone = new string[100];
+            this.cidade = new string[100];
+            this.estado = new string[100];
+
+            //Preencher com valores iniciais
+            for (i = 0; i < 100; i++)
+            {
+                codigo[i] = 0;
+                nome[i] = "";
+                telefone[i] = "";
+                cidade[i] = "";
+                estado[i] = "";
+            }//fim do for
+
+            //Criando o comando para consultar no BD
+            MySqlCommand coletar = new MySqlCommand(query, conexao);
+            //Leitura dos dados do banco
+            MySqlDataReader leitura = coletar.ExecuteReader();
+
+            i = 0;
+            contador = 0;
+            while (leitura.Read())
+            {
+                codigo[i] = Convert.ToInt32(leitura["codigo"]);
+                nome[i] = leitura["nome"] + "";
+                telefone[i] = leitura["telefone"] + "";
+                cidade[i] = leitura["cidade"] + "";
+                estado[i] = leitura["estado"] + "";
+                i++;
+                contador++;
+
+            }//Fim do while
+
+            //Fechar a leitura de dados no banco
+            leitura.Close();
+        }//fim do método preencher
+
+        public int[] ConsultarCodigo()
+        {
+            PreencherVetor();
+            return codigo;
+        }//fim do método
+        public string[] ConsultarNome()
+        {
+            PreencherVetor();
+            return nome;
+        }//fim do método
+
+        public string[] ConsultarTelefone()
+        {
+            PreencherVetor();
+            return telefone;
+        }//fim do método
+
+        public string[] ConsultarCidade()
+        {
+            PreencherVetor();
+            return cidade;
+        }//fim do método
+
+        public string[] ConsultarEstado()
+        {
+            PreencherVetor();
+            return estado;
+        }//fim do método
+
     }//fim da classe
 }//fim do projeto
